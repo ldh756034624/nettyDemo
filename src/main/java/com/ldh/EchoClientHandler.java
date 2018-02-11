@@ -16,25 +16,29 @@ import java.util.Scanner;
 public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
 
-    protected void messageReceived(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
-
-    }
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
-        while(true){
-            Scanner scanner = new Scanner(System.in);
-            String msg = scanner.nextLine();
-            ByteBuf byteBuf = Unpooled.copiedBuffer(msg.getBytes());
-            ctx.writeAndFlush(byteBuf);
-        }
+        new Thread(() -> {
+            while(true){
+                Scanner scanner = new Scanner(System.in);
+                String msg = scanner.nextLine();
+                ByteBuf byteBuf = Unpooled.copiedBuffer(msg.getBytes());
+                ctx.writeAndFlush(byteBuf);
+            }
+        }).start();
+
     }
 
+
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf)   {
+
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf byteBuf = (ByteBuf)msg;
-        System.out.println("received: "+byteBuf.toString(CharsetUtil.UTF_8));
+        String readMsg = byteBuf.toString(CharsetUtil.UTF_8);
+        System.out.println("readMsg: "+readMsg);
     }
 }
