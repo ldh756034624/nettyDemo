@@ -21,13 +21,15 @@ public class EchoClint {
 
 
         final EchoClientHandler echoClientHandler = new EchoClientHandler();
+        final OutBoundHandler outBoundHandler = new OutBoundHandler();
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap().group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .remoteAddress("127.0.0.1",port)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(echoClientHandler);
+//                        socketChannel.pipeline().addLast(echoClientHandler,outBoundHandler);
+                        socketChannel.pipeline().addLast(outBoundHandler,echoClientHandler);
                     }
                 });
 

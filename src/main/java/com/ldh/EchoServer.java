@@ -7,7 +7,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
  * Created by itservice on 2018/1/5.
@@ -23,6 +22,7 @@ public class EchoServer {
     public static void start(int port) throws InterruptedException {
 
         final EchoServerHandler echoServerHandler = new EchoServerHandler();
+        final SecondHandler secondHandler = new SecondHandler();
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         ServerBootstrap serverBootstrap = new ServerBootstrap()
                 .group(eventLoopGroup)
@@ -30,7 +30,8 @@ public class EchoServer {
                 .localAddress(port)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
             protected void initChannel(SocketChannel socketChannel){
-                socketChannel.pipeline().addLast(echoServerHandler);
+//                socketChannel.pipeline().addLast(secondHandler,echoServerHandler);
+                socketChannel.pipeline().addLast(echoServerHandler, secondHandler);
             }
         });
 

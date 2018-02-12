@@ -38,6 +38,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("接受到的消息："+msgStr);
         sendMsgToChannel(msgStr);
 
+//        ctx.fireChannelRead(byteBuf);
     }
 
     private void sendMsgToChannel(String msg) {
