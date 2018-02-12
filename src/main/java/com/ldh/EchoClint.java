@@ -33,7 +33,7 @@ public class EchoClint {
 
         ChannelFuture channelFuture = bootstrap.connect().sync();
 
-        channelFuture.channel().closeFuture().sync();
+//        channelFuture.channel().closeFuture().sync();
 
     }
 

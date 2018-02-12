@@ -24,10 +24,12 @@ public class EchoServer {
 
         final EchoServerHandler echoServerHandler = new EchoServerHandler();
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
-        ServerBootstrap serverBootstrap = new ServerBootstrap().group(eventLoopGroup)
+        ServerBootstrap serverBootstrap = new ServerBootstrap()
+                .group(eventLoopGroup)
                 .channel(NioServerSocketChannel.class)
-                .localAddress(port).childHandler(new ChannelInitializer<SocketChannel>() {
-            protected void initChannel(SocketChannel socketChannel) throws Exception {
+                .localAddress(port)
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+            protected void initChannel(SocketChannel socketChannel){
                 socketChannel.pipeline().addLast(echoServerHandler);
             }
         });
