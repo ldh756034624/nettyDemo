@@ -17,7 +17,7 @@ public class EchoClint {
     private int port;
 
 
-    public static void start(int port) throws InterruptedException {
+     public static void start(int port) throws InterruptedException {
 
 
         final EchoClientHandler echoClientHandler = new EchoClientHandler();
@@ -30,6 +30,7 @@ public class EchoClint {
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
 //                        socketChannel.pipeline().addLast(echoClientHandler,outBoundHandler);
                         socketChannel.pipeline().addLast(outBoundHandler,echoClientHandler);
+//                        socketChannel.pipeline().addLast(echoClientHandler);
                     }
                 });
 

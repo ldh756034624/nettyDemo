@@ -1,5 +1,7 @@
-package com.ldh;
+package com.ldh.http_server;
 
+import com.ldh.EchoServerHandler;
+import com.ldh.SecondHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -7,11 +9,12 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpServerCodec;
 
 /**
  * Created by itservice on 2018/1/5.
  */
-public class EchoServer {
+public class HttpServer {
 
     private int port;
 
@@ -21,8 +24,6 @@ public class EchoServer {
 
     public static void start(int port) throws InterruptedException {
 
-        final EchoServerHandler echoServerHandler = new EchoServerHandler();
-        final SecondHandler secondHandler = new SecondHandler();
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         ServerBootstrap serverBootstrap = new ServerBootstrap()
                 .group(eventLoopGroup)
@@ -30,9 +31,7 @@ public class EchoServer {
                 .localAddress(port)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
             protected void initChannel(SocketChannel socketChannel){
-//                socketChannel.pipeline().addLast(secondHandler,echoServerHandler);
-                socketChannel.pipeline().addLast(echoServerHandler, secondHandler);
-//                socketChannel.pipeline().addLast( echoServerHandler);
+                socketChannel.pipeline().addLast(new HttpServerCodec(),new HttpHandler());
             }
         });
 
