@@ -1,5 +1,7 @@
-package com.ldh;
+package com.ldh.message;
 
+import com.ldh.EchoServerHandler;
+import com.ldh.SecondHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,7 +13,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * Created by itservice on 2018/1/5.
  */
-public class EchoServer {
+public class MessageServer {
 
     private int port;
 
@@ -21,8 +23,6 @@ public class EchoServer {
 
     public static void start(int port) throws InterruptedException {
 
-        final EchoServerHandler echoServerHandler = new EchoServerHandler();
-        final SecondHandler secondHandler = new SecondHandler();
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         ServerBootstrap serverBootstrap = new ServerBootstrap()
                 .group(eventLoopGroup)
@@ -30,9 +30,7 @@ public class EchoServer {
                 .localAddress(port)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
             protected void initChannel(SocketChannel socketChannel){
-//                socketChannel.pipeline().addLast(secondHandler,echoServerHandler);
-                socketChannel.pipeline().addLast(echoServerHandler, secondHandler);
-//                socketChannel.pipeline().addLast( echoServerHandler);
+                socketChannel.pipeline().addLast(new ToIntegerDecoder(),new com.ldh.message.SecondHandler());
             }
         });
 
